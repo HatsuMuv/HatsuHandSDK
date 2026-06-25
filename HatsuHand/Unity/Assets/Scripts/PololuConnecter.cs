@@ -28,9 +28,13 @@ using System.Runtime.InteropServices;
 
 public class PololuConnecter : MonoBehaviour
 {
+    // Normal Index, Middle, Ring, Pinky
     private const int MIN_LIMIT = 4000;
-
     private const int MAX_LIMIT = 8000;
+
+    // For Thumb, the range is different
+    private const int MIN_LIMIT_THUMB = 4000;
+    private const int MAX_LIMIT_THUMB = 6000;
 
     public void Test()
     {
@@ -48,6 +52,11 @@ public class PololuConnecter : MonoBehaviour
 
     public void MoveFingerWithParam(int fingerNum, float param, string serial=null)
     {
+        if (fingerNum == 4) // Thumb
+        {
+            TrySetTarget((Byte)fingerNum, (UInt16)Remap(param, 0, 1, MIN_LIMIT_THUMB, MAX_LIMIT_THUMB), serial);
+            return;
+        }
         TrySetTarget((Byte)fingerNum, (UInt16)Remap(param, 0, 1, MIN_LIMIT, MAX_LIMIT),serial);
     }
 
